@@ -29,11 +29,11 @@ O atributo State será uma lista para guardar as jogadas de maneira imutável, p
 
 ### Metódos de GameState
 #### `def isEmpty?()`
-O metódo verifica se o espaço é vazio, caso sim, retorna __true__, caso contrário, retorna __false__
+O metódo __isEmpty?()__ verifica se o espaço é vazio, caso sim, retorna __true__, caso contrário, retorna __false__
 #### `def SpaceHitPoints()`
-O metódo retorna a pontuação, caso isEmpty? retorne falso.
+O metódo __SpaceHitPoints()__ retorna a pontuação, caso isEmpty? retorne falso.
 #### `def GameOver?()`
-O metódo verifica se o jogo acabou. Caso sim, retorna __true__, caso contrário, retorna __false__
+O metódo __GameOver?()__verifica se o jogo acabou. Caso sim, retorna __true__, caso contrário, retorna __false__
 
 
 
