@@ -31,10 +31,14 @@ O atributo State será uma lista para guardar as jogadas de maneira imutável, p
 #### `def isEmpty?()`
 O metódo __isEmpty?()__ verifica se o espaço é vazio, caso sim, retorna __true__, caso contrário, retorna __false__
 #### `def SpaceHitPoints()`
-O metódo __SpaceHitPoints()__ retorna a pontuação, caso isEmpty? retorne falso.
+O metódo __SpaceHitPoints()__ retorna a pontuação, caso __isEmpty?()__ retorne falso.
 #### `def GameOver?()`
-O metódo __GameOver?()__verifica se o jogo acabou. Caso sim, retorna __true__, caso contrário, retorna __false__
+O metódo __GameOver?()__ verifica se o jogo acabou. Caso sim, retorna __true__, caso contrário, retorna __false__
 
+## Menu
+A classe Menu será responsável por controlar o menu inicial de seleção para o usuário.
+
+### Propriedades de Menu:
 
 
 
