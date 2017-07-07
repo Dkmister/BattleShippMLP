@@ -63,11 +63,14 @@ O atributo __name__ irá designar o nome da navio.
 O atributo __damage__ irá designar o dano do navio, se ele está intacto, danificado ou destruído.
 
 #### position
-O atributo __positions__ irá designar as posições e consequentemente, seu tamanho. 
+O atributo __positions__ irá designar as posições e consequentemente, seu tamanho.
 
 #### Metódos de Ship
 #### `def SetName()`
-O metódo __SetName()__ será extramemente parecido com o da classe __Player__ , ele irá definir o nome do navio.
+O método __SetName()__ será extramemente parecido com o da classe __Player__ , ele irá definir o nome do navio.
 
+#### `def changeDamage()`
+O método __changeDamage()__ irá modificar o tipo de dano que o navio está, ou seja, o estado dele.
 
-
+#### `def setPosition()`
+O método __setPosition()__ irá definir as posições do navio, ou seja, sua localização.
