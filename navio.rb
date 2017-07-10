@@ -2,6 +2,7 @@ require_relative "embarcacao.rb"
 
 class Navio < Embarcacao
 	def initialize
-		@tipo = "1"
+		@tipo = "3"
+		@visivel = false		
 	end
 end

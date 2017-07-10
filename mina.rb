@@ -2,6 +2,7 @@ require_relative "unidade.rb"
 
 class Mina < Unidade
 	def initialize
-		@tipo = "*"
+		@tipo = "1"
+		@visivel = false		
 	end
 end
