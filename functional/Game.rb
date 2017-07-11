@@ -61,14 +61,13 @@ class Game
         exit
       end
 
-      if linha >= 0 and linha <= (@table.cells.uniq { |c| c[:y] }).length - 1
+      if linha >= 0 and linha <= @table.num_of_rows - 1
         puts "Informe o número da coluna:"
         coluna = gets.to_i
-        if coluna >= 0 and coluna <= (@table.cells.uniq { |c| c[:x] }).length - 1
+        if coluna >= 0 and coluna <= @table.num_of_cols - 1
           shot = {x: coluna, y:linha}
           @table.add_shot(shot)
-          target = @table.targets.select { |t| t.occupies(shot) }
-          if target.length > 0
+          if (@table.targets.select { |t| t.occupies(shot) }).length > 0
             buffer = "Linha #{shot[:y]}, Coluna #{shot[:x]}: Acertou o alvo!"
           else
             buffer = "Linha #{shot[:y]}, Coluna #{shot[:x]}: Errou o alvo!"

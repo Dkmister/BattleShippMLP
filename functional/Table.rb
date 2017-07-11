@@ -12,12 +12,10 @@ class Table
   end
 
   def num_of_cols
-    cols = @cells.uniq { |c| c[:x] }
-    return cols.length
+    return (@cells.uniq { |c| c[:x] }).length
   end
   def num_of_rows
-    rows = @cells.uniq { |c| c[:y] }
-    return rows.length
+    return (@cells.uniq { |c| c[:y] }).length
   end
 
   def add_target(target)
@@ -49,7 +47,7 @@ class Table
     lines = @cells.uniq { |c| c[:y] }
     lines = lines.map { |c| @cells.select { |a| c[:y] == a[:y] } }
     print "     "
-    for i in 0..lines[0].length-1
+    for i in 0..self.num_of_rows-1
       print format('%02d', i), " "
     end
     print "\n"
