@@ -1,5 +1,6 @@
 require_relative "Target.rb"
 
+
 class Table
   def cells
     @cells
@@ -11,11 +12,16 @@ class Table
     @shots
   end
 
+  def count_unique
+    lambda do |f,array|
+      (array.uniq { |i| f.(i) }).length
+    end
+  end
   def num_of_cols
-    return (@cells.uniq { |c| c[:x] }).length
+    return count_unique.(lambda { |c| c[:x] }, @cells)
   end
   def num_of_rows
-    return (@cells.uniq { |c| c[:y] }).length
+    return count_unique.(lambda { |c| c[:y] }, @cells)
   end
 
   def add_target(target)
