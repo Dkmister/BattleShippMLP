@@ -69,7 +69,7 @@ class Game
 				exit
 			end
 			
-			if linha == 99
+			if linha == 42
 				@tabuleiro.setTodosVisiveis
 			else	
 				if linha >= 1 and linha <= @tamanho
@@ -80,8 +80,8 @@ class Game
 							buffer = "Linha #{linha}, Coluna #{coluna}: Errou o alvo!"
 						else
 							buffer = "Linha #{linha}, Coluna #{coluna}: Acertou o alvo!"
-							@tabuleiro.setVisivel(linha, coluna)
 						end
+						@tabuleiro.setVisivel(linha, coluna)						
 						@jogadas += 1
 					else
 						buffer = "Número da coluna inválido."

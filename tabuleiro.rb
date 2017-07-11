@@ -84,7 +84,13 @@ class Tabuleiro
 			@unidades = 0
 			@invisiveis = 0
 			@tamanho = tam
-			@matriz = Array.new(@tamanho) { Array.new(@tamanho, Agua.new) }
+			@matriz = Array.new(@tamanho)
+			for i in 0..@tamanho-1
+				@matriz[i] = Array.new(@tamanho)
+				for j in 0..@tamanho-1
+					@matriz[i][j] = Agua.new
+				end
+			end
 			@num_aleatorio = Random.new
 		else
 			raise "Tamanho do tabuleiro deve ser numérico"
@@ -115,7 +121,7 @@ class Tabuleiro
 				if @matriz[i][j].visivel
 					print " #{@matriz[i][j].tipo} "
 				else
-					print " ~ "
+					print " . "
 				end
 			end
 			print "\n"
