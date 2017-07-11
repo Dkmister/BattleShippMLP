@@ -4,49 +4,8 @@ require_relative "navio.rb"
 require_relative "submarino.rb"
 
 class Tabuleiro
-	
-	def initialize(tam)
-		if tam.is_a?(Integer)
-			@unidades = 0
-			@invisiveis = 0
-			@tamanho = tam
-			@matriz = Array.new(@tamanho) { Array.new(@tamanho, Agua.new) }
-		else
-			raise "Tamanho do tabuleiro deve ser numérico"
-		end
-	end
 
-	def imprimir
-		for i in 0..@tamanho-1
-			if i == 0
-				for j in 0..@tamanho-1
-					if j == 0
-						print "   "
-					end
-					if j < 9
-						print " #{j+1} "
-					else
-						print "#{j+1} "
-					end
-				end
-				print "\n"
-			end
-			if i < 9
-				print " #{i+1} "
-			else
-				print "#{i+1} "
-			end
-			for j in 0..@tamanho-1
-				if @matriz[i][j].visivel
-					print " #{@matriz[i][j].tipo} "
-				else
-					print " ~ "
-				end
-			end
-			print "\n"
-		end
-	end
-	
+	private
 	def inserir(linha, coluna, unidade, orientacao)
 		case unidade
 			when Mina
@@ -108,14 +67,69 @@ class Tabuleiro
 		return false
 	end
 	
+	# Uso de delagates
+	def method_missing(method, *args)
+		if num_aleatorio.respond_to?(method)
+			num_aleatorio.send(method, *args)
+		else
+			super
+		end
+	end
+	attr_reader :num_aleatorio
+
+
+	public
+	def initialize(tam)
+		if tam.is_a?(Integer)
+			@unidades = 0
+			@invisiveis = 0
+			@tamanho = tam
+			@matriz = Array.new(@tamanho) { Array.new(@tamanho, Agua.new) }
+			@num_aleatorio = Random.new
+		else
+			raise "Tamanho do tabuleiro deve ser numérico"
+		end
+	end
+
+	def imprimir
+		for i in 0..@tamanho-1
+			if i == 0
+				for j in 0..@tamanho-1
+					if j == 0
+						print "   "
+					end
+					if j < 9
+						print " #{j+1} "
+					else
+						print "#{j+1} "
+					end
+				end
+				print "\n"
+			end
+			if i < 9
+				print " #{i+1} "
+			else
+				print "#{i+1} "
+			end
+			for j in 0..@tamanho-1
+				if @matriz[i][j].visivel
+					print " #{@matriz[i][j].tipo} "
+				else
+					print " ~ "
+				end
+			end
+			print "\n"
+		end
+	end
+	
 	def adicionar(unidade)
 		tentativas = 0
 		
 		while true
-			linha = Random.rand(0..@tamanho-1)
-			coluna = Random.rand(0..@tamanho-1)
+			linha = num_aleatorio.rand(0..@tamanho-1)
+			coluna = num_aleatorio.rand(0..@tamanho-1)
 			
-			case Random.rand(0..1)
+			case num_aleatorio.rand(0..1)
 				when 0
 					orientacao = "horizontal"
 				when 1
@@ -156,7 +170,11 @@ class Tabuleiro
 								   return true
 							end				
 					end
+
+				else
+					raise "Tipo de unidade não suportada"
 			end
+			
 			if tentativas > 100
 				raise "Não foi encontrado espaço para inclusão da nova unidade"
 			end
@@ -165,27 +183,50 @@ class Tabuleiro
 		return false
 	end
 
-	def agua(x,y)
-		if @matriz[x-1][y-1].is_a?(Agua)
-			return true
+	def isAgua(x,y)
+		if x.is_a?(Integer) and
+		   y.is_a?(Integer) and
+		   x >= 1 and x <= @tamanho and
+		   y >= 1 and y <= @tamanho
+				if @matriz[x-1][y-1].is_a?(Agua)
+					return true
+				else
+					return false
+				end
 		else
-			return false
+			raise "Parâmetro inválido"
 		end
 	end
 
-	def visivel(x,y)
-		if !@matriz[x-1][y-1].is_a?(Agua) and
-		   !@matriz[x-1][y-1].visivel
-			@invisiveis -= 1
+	def setVisivel(x,y)
+		if x.is_a?(Integer) and
+		   y.is_a?(Integer) and
+		   x >= 1 and x <= @tamanho and
+		   y >= 1 and y <= @tamanho		
+				if @matriz[x-1][y-1].is_a?(Agua) == false and
+				   @matriz[x-1][y-1].visivel == false
+					@invisiveis -= 1
+				end
+				@matriz[x-1][y-1].visivel = true
+		else
+			raise "Parâmetro inválido"
 		end
-		@matriz[x-1][y-1].visivel = true		
 	end
 
-	def unidades
+	def getUnidades
 		@unidades
 	end
 
-	def invisiveis
+	def getInvisiveis
 		@invisiveis
 	end
+	
+	def setTodosVisiveis
+		for i in 1..@tamanho
+			for j in 1..@tamanho
+				setVisivel(i,j)
+			end
+		end
+	end
+	
 end

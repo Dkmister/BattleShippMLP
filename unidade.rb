@@ -1,4 +1,9 @@
-class Unidade	
+class Unidade
+	public
+	def initialize
+		@visivel = false
+	end	
+
 	def tipo
 		@tipo
 	end
