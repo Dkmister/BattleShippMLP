@@ -4,9 +4,9 @@ class Game
 
   def initialize(size_x, size_y)
     @table = Table.new(size_x, size_y)
-    @table.create_mines 5
-    @table.create_submarines 4
-    @table.create_ships 3
+    (@table.create_mines 5).each { |m| @table.add_target m }
+    (@table.create_submarines 4).each { |s| @table.add_target s }
+    (@table.create_ships 3).each { |s| @table.add_target s }
   end
 
   def play
