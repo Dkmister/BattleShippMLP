@@ -24,7 +24,7 @@ class Table
     @targets.push(target)
   end
   def add_shot(shot)
-    @shots.push(target)
+    @shots.push(shot)
   end
 
   def display
@@ -38,9 +38,31 @@ class Table
     lines.each do |l|
       print " ", format('%02d', l[0][:y]), " "
       l.each do |c|
+        shot = @shots.select { |s| s[:x] == c[:x] and s[:y] ==c[:y] }
         target = @targets.select { |t| t.occupies(c) }
-        if target.length > 0
-          print " ", target[0].display, " "
+        if shot.length > 0
+          if target.length > 0
+            destroyed = true
+            o = target[0].origin
+            for i in 0..target[0].cell_span - 1
+              if target[0].direction == 'row'
+                if (@shots.select { |s| s[:x] == o[:x]+i and s[:y] == o[:y] }).length == 0
+                  destroyed = false
+                end
+              else
+                if (@shots.select { |s| s[:x] == o[:x] and s[:y] == o[:y]+i }).length == 0
+                  destroyed = false
+                end
+              end
+            end
+            if destroyed
+              print " ", target[0].display, " "
+            else
+              print " x "
+            end
+          else
+            print " ~ "
+          end
         else
           print " · "
         end
@@ -58,10 +80,12 @@ class Table
   def create_mines(quantity)
     initial_targets_length = self.targets.length
     while targets.length - initial_targets_length < quantity do
+      new_mine = Target.new('mine', 'row')
       cell = self.get_random_cell(self.num_of_cols, self.num_of_rows)
       target = @targets.find { |t| t.occupies( cell ) }
       if not target
-        self.add_target(Target.new('mine', cell, 'row' ))
+        new_mine.set_origin(cell)
+        self.add_target(new_mine)
       end
     end
   end
@@ -70,6 +94,7 @@ class Table
     initial_targets_length = self.targets.length
     while targets.length - initial_targets_length < quantity do
       direction = rand(2) == 1 ? 'row' : 'col'
+      new_submarine = Target.new('submarine', direction)
       max_x = direction == 'row' ? 14 : 15
       max_y = direction == 'col' ? 14 : 15
       cell1 = self.get_random_cell(max_x, max_y)
@@ -77,7 +102,8 @@ class Table
       target1 = @targets.find { |t| t.occupies( cell1 ) }
       target2 = @targets.find { |t| t.occupies( cell2 ) }
       if not target1 and not target2
-        self.add_target(Target.new('submarine', cell1, direction ))
+        new_submarine.set_origin(cell1)
+        self.add_target(new_submarine)
       end
     end
   end
@@ -86,6 +112,7 @@ class Table
     initial_targets_length = self.targets.length
     while targets.length - initial_targets_length < quantity do
       direction = rand(2) == 1 ? 'row' : 'col'
+      new_ship = Target.new('ship', direction)
       max_x = direction == 'row' ? 13 : 15
       max_y = direction == 'col' ? 13 : 15
       cell1 = self.get_random_cell(max_x, max_y)
@@ -95,7 +122,8 @@ class Table
       target2 = @targets.find { |t| t.occupies( cell2 ) }
       target3 = @targets.find { |t| t.occupies( cell3 ) }
       if not target1 and not target2 and not target3
-        self.add_target(Target.new('ship', cell1, direction ))
+        new_ship.set_origin(cell1)
+        self.add_target(new_ship)
       end
     end
   end
@@ -113,9 +141,3 @@ class Table
     @targets = Array.new()
   end
 end
-
-t = Table.new(15, 15)
-t.create_mines 5
-t.create_submarines 4
-t.create_ships 3
-t.display

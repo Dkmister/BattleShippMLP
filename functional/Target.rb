@@ -12,6 +12,10 @@ class Target
     @cell_span
   end
 
+  def set_origin(cell)
+    @origin = cell
+  end
+
   def display
     if @type == 'mine'
       return 'm'
@@ -27,7 +31,7 @@ class Target
     cells.push(@origin)
     x = @origin[:x]
     y = @origin[:y]
-    if cell_span > 1
+    if @cell_span > 1
       for i in 1..@cell_span-1
         if @direction == 'row'
           x += 1
@@ -46,10 +50,9 @@ class Target
     return cells.length > 0
   end
 
-  def initialize (type, origin, direction)
+  def initialize (type, direction)
     if ['mine', 'submarine', 'ship'].include? type
       @type = type
-      @origin = origin
       @direction = direction
       if @type == 'mine'
         @cell_span = 1
